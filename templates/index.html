@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SISTEMA EOS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+.panel-toggle {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #00bfff; /* Azul neón */
+    color: black;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+    transition: left 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.6);
+}
+
+.panel-toggle.shifted {
+    left: 300px;
+}
+
+.panel-admin {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100%;
+    background-color: rgba(10, 10, 20, 0.9); /* fondo negro semitransparente */
+    color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 2px 0 15px rgba(0, 191, 255, 0.4);
+    border-right: 1px solid rgba(0, 191, 255, 0.4);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: left 0.3s ease;
+    z-index: 9;
+}
+
+.panel-admin.open {
+    left: 0;
+}
+
+.panel-admin h3 {
+    margin-top: 0;
+    font-size: 22px;
+    color: #ff9100; /* Naranja neón */
+    text-shadow: 0 0 8px rgba(255, 145, 0, 0.8);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.panel-admin form {
+    margin-bottom: 20px;
+}
+
+.panel-admin input {
+    width: 100%;
+    font-size: 16px;
+    background-color: #1a1c24;
+    color: #ffffff;
+    border: 2px solid #00bfff;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 12px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.panel-admin input:focus {
+    border-color: #ff9100;
+    box-shadow: 0 0 8px #ff9100;
+}
+    </style>
+</head>
+<body>
+
+<button class="panel-toggle" id="panelToggle" onclick="togglePanel()">
+    <span id="menu-icon">☰</span>
+</button>
+
+
+{% if username == 'admin' %}
+<div id="adminPanel" class="panel-admin">
+    <h3>Administrar Usuarios</h3>
+    <form action="{{ url_for('crear_usuario') }}" method="post">
+        <input type="text" name="nuevo_usuario" placeholder="Nuevo usuario" required>
+        <input type="password" name="nueva_contraseña" placeholder="Contraseña" required>
+        <button type="submit">Crear Usuario</button>
+    </form>
+    <form action="{{ url_for('eliminar_usuario') }}" method="post">
+        <input type="text" name="usuario_a_eliminar" placeholder="Usuario a eliminar" required>
+        <button type="submit">Eliminar Usuario</button>
+    {% if mensaje_crear %}
+        <p id="mensajeTemporal" class="mensaje-panel">{{ mensaje_crear }}</p>
+    {% endif %}
+    </form>
+</div>
+{% endif %}
+
+<div class="contenedor-cuadro">
+    <h2 id="titulo"><span>GESTORÍA EOS</span></h2>
+    <form action="{{ url_for('merge_pdfs') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="original_pdfs" accept="application/pdf" multiple required><br><br>
+        <label for="reverso">¿Agregar reverso?</label>
+        <select name="reverso" id="reverso">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+        </select><br><br>
+        <label for="folio">¿Agregar folio?</label>
+        <select name="folio" id="folio">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+        </select><br><br>
+        <button type="submit">Procesar PDFs</button>
+    </form>
+    <form action="{{ url_for('logout') }}" method="post" style="margin-top: 30px;">
+        <button type="submit" class="btn-logout">Cerrar sesión</button>
+    </form>
+</div>
+
+<script>
+    function togglePanel() {
+        const panel = document.getElementById('adminPanel');
+        const toggleBtn = document.getElementById('panelToggle');
+        const icon = document.getElementById('menu-icon');
+
+        const isOpen = panel.classList.toggle('open');
+
+        // Cambiar ícono y mover el botón
+        icon.textContent = isOpen ? '✖' : '☰';
+        toggleBtn.classList.toggle('shifted', isOpen);
+    }
+
+    // Mensaje temporal
+    window.addEventListener('DOMContentLoaded', () => {
+        const mensaje = document.getElementById('mensajeTemporal');
+        if (mensaje) {
+            setTimeout(() => {
+                mensaje.style.display = 'none';
+            }, 3000);
+        }
+    });
+</script>
+
+</body>
+</html>

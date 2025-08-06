@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: url('/static/img/fondo.jpeg') no-repeat center center fixed;
+    background-size: cover;
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h2#titulo {
+    color: #ff9100;
+    text-align: center;
+    font-size: 48px;
+    margin: 30px 0 60px 0;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-shadow:
+        0 0 5px rgba(255, 145, 0, 0.9),
+        0 0 10px rgba(255, 145, 0, 0.7),
+        0 0 20px rgba(255, 145, 0, 0.6);
+}
+
+h2#titulo span {
+    background: rgba(0, 0, 0, 0.6); /* Fondo negro transparente */
+    padding: 10px 25px;
+    border-radius: 30px;
+    display: inline-block;
+    box-shadow: 0 0 12px rgba(255, 145, 0, 0.4);
+}
+
+input, select {
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #1a1c24;
+    border: 2px solid #00bfff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin: 10px 0;
+}
+
+input:focus, select:focus {
+    border-color: #ff9100;
+    box-shadow: 0 0 10px #ff9100;
+}
+
+button {
+    background-color: #00bfff;
+    margin: 40px auto 30px auto;
+    display: block;
+    border-radius: 12px;
+    color: black;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-family: 'Roboto', Arial, sans-serif;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(0, 191, 255, 0.7);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff9100;
+    color: #000;
+    box-shadow: 0 0 16px rgba(255, 145, 0, 0.9);
+}
+
+.contenedor-cuadro {
+    background: rgba(10, 10, 20, 0.4);  /* Transparente más sutil */
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 60px 40px;
+    width: 90%;
+    max-width: 700px;
+    margin: 50px auto;
+    box-shadow: 0 0 25px 4px rgba(0, 191, 255, 0.3);
+    backdrop-filter: blur(10px); /* desenfoque tipo vidrio */
+    -webkit-backdrop-filter: blur(10px); /* para Safari */
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 191, 255, 0.4);
+}
+
+.error {
+    color: #ff4c4c;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.btn-logout {
+    background-color: #ff5722;
+    margin: 20px auto 0 auto;
+    display: block;
+    border-radius: 12px;
+    color: white;
+    padding: 12px 40px;
+    font-size: 18px;
+    font-family: 'Roboto', Arial, sans-serif;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(255, 87, 34, 0.6);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #e64a19;
+    box-shadow: 0 0 18px rgba(255, 87, 34, 0.8);
+}
