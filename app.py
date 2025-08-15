@@ -105,24 +105,40 @@ def convert_to_pageobject(page):
         return PageObject(page.pdf, page.indirect_reference)
     return page
 
+import re
+
 def detectar_estado(texto):
     estados = [
         "AGUASCALIENTES", "BAJA CALIFORNIA", "BAJA CALIFORNIA SUR", "CAMPECHE", "CHIAPAS", "CHIHUAHUA",
-        "CIUDAD DE MEXICO", "COAHUILA", "COLIMA", "DURANGO", "MEXICO", "GUANAJUATO",
-        "GUERRERO", "HIDALGO", "JALISCO", "MICHOACAN", "MORELOS", "NAYARIT", "NUEVO LEON",
-        "OAXACA", "PUEBLA", "QUERETARO", "QUINTANA ROO", "SAN LUIS POTOSI", "SINALOA",
-        "SONORA", "TABASCO", "TAMAULIPAS", "TLAXCALA", "VERACRUZ", "YUCATAN", "ZACATECAS"
+        "CIUDAD DE MEXICO", "COAHUILA", "COLIMA", "DURANGO", "MEXICO", "GUANAJUATO", "GUERRERO", "HIDALGO",
+        "JALISCO", "MICHOACAN", "MORELOS", "NAYARIT", "NUEVO LEON", "OAXACA", "PUEBLA", "QUERETARO",
+        "QUINTANA ROO", "SAN LUIS POTOSI", "SINALOA", "SONORA", "TABASCO", "TAMAULIPAS", "TLAXCALA",
+        "VERACRUZ", "YUCATAN", "ZACATECAS"
     ]
+    variantes = {
+        "MICHOACAN DE OCAMPO": "MICHOACAN",
+        "ESTADO DE MEXICO": "MEXICO",
+        "QUERETARO DE ARTEAGA": "QUERETARO",
+        "VERACRUZ DE IGNACIO DE LA LLAVE": "VERACRUZ",
+        "COAHUILA DE ZARAGOZA": "COAHUILA",
+        "DISTRITO FEDERAL": "CIUDAD DE MEXICO"
+    }
 
+    # Convertir a texto plano
     texto_region = texto.extract_text() if hasattr(texto, 'extract_text') else str(texto)
     texto_region = texto_region.upper()
 
-    for estado in estados:
-        if f"CODIGO CIVIL DEL ESTADO DE {estado}" in texto_region:
-            return estado
-        if f"DEL ESTADO DE {estado}" in texto_region:
-            return estado
+    # Buscar directamente después de ENTIDAD DE REGISTRO
+    m = re.search(r"ENTIDAD\s+DE\s+REGISTRO\s*[:\-]?\s*([A-Z\s]+)", texto_region)
+    if m:
+        encontrado = m.group(1).strip()
+        if encontrado in variantes:
+            return variantes[encontrado]
+        for estado in estados:
+            if estado in encontrado:
+                return estado
 
+    # Respaldo: buscar cualquier estado en el texto
     for estado in estados:
         if estado in texto_region:
             return estado
