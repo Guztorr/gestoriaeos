@@ -320,7 +320,7 @@ def merge_pdfs():
         writer.write(output_pdf)
         output_pdf.seek(0)
         processed_files.append({
-            "filename": f"Act_{original_file.filename}",
+            "filename": f"{original_file.filename}",
             "content": output_pdf
         })
     if not processed_files:
